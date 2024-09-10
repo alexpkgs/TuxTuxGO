@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-// Define keyframes for animations as JavaScript objects
-const fadeInKeyframes = `
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-`;
-
-const slideUpKeyframes = `
-  @keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+// Define keyframes for loading spinner
+const loadingSpinnerKeyframes = `
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 `;
 
@@ -19,33 +12,62 @@ const slideUpKeyframes = `
 const addKeyframes = () => {
   const style = document.createElement('style');
   style.type = 'text/css';
-  style.innerHTML = fadeInKeyframes + slideUpKeyframes;
+  style.innerHTML = loadingSpinnerKeyframes;
   document.head.appendChild(style);
 };
 
-// Define styles using JavaScript objects
-const fadeInStyle: React.CSSProperties = {
-  animation: 'fadeIn 1s ease-in',
+// Styles for spinner
+const spinnerStyle: React.CSSProperties = {
+  border: '8px solid #f3f3f3',
+  borderTop: '8px solid #3498db',
+  borderRadius: '50%',
+  width: '60px',
+  height: '60px',
+  animation: 'spin 1s linear infinite',
 };
 
-const slideUpStyle: React.CSSProperties = {
-  animation: 'slideUp 1s ease-in-out',
+// Styles for overlay
+const overlayStyle: React.CSSProperties = {
+  position: 'fixed',
+  top: '0',
+  left: '0',
+  width: '100%',
+  height: '100%',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 1000,
 };
 
-const MyComponent: React.FC = () => {
-  const [show, setShow] = useState(false);
-
+const LoadingSpinner: React.FC = () => {
   useEffect(() => {
     addKeyframes(); // Add keyframes to the document head
-    const timer = setTimeout(() => setShow(true), 100); // Delay to trigger animation
-    return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div style={show ? fadeInStyle : {}}>
-      <h1 style={show ? slideUpStyle : {}}>Hello, World!</h1>
+    <div style={overlayStyle}>
+      <div style={spinnerStyle}></div>
     </div>
   );
 };
 
-export default MyComponent;
+// Example of a page component with loading animation
+const PageWithLoading: React.FC = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading
+    const timer = setTimeout(() => setLoading(false), 3000); // 3 seconds loading time
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div>
+      {loading ? <LoadingSpinner /> : <div>Your content goes here</div>}
+    </div>
+  );
+};
+
+export default PageWithLoading;
+
