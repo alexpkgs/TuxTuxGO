@@ -11,14 +11,14 @@ const App: React.FC = () => {
     };
 
     const loadContent = () => {
-        setDynamicContent('Loading content...');
+        setDynamicContent('loading...');
         setTimeout(() => {
-            setDynamicContent('Content loaded successfully!');
+            setDynamicContent('LOADED');
         }, 1000);
     };
 
     return (
-        <div className="App">
+        <div className="theme">
     );
 };
 
