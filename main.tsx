@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-// Define keyframes for loading spinner
-const loadingSpinnerKeyframes = `
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+// Define keyframes for fade-out animation
+const fadeOutKeyframes = `
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
   }
 `;
 
@@ -12,62 +12,29 @@ const loadingSpinnerKeyframes = `
 const addKeyframes = () => {
   const style = document.createElement('style');
   style.type = 'text/css';
-  style.innerHTML = loadingSpinnerKeyframes;
+  style.innerHTML = fadeOutKeyframes;
   document.head.appendChild(style);
 };
 
-// Styles for spinner
-const spinnerStyle: React.CSSProperties = {
-  border: '8px solid #f3f3f3',
-  borderTop: '8px solid #3498db',
-  borderRadius: '50%',
-  width: '60px',
-  height: '60px',
-  animation: 'spin 1s linear infinite',
+// Styles for fade-out effect
+const fadeOutStyle: React.CSSProperties = {
+  animation: 'fadeOut 1s ease-out',
 };
 
-// Styles for overlay
-const overlayStyle: React.CSSProperties = {
-  position: 'fixed',
-  top: '0',
-  left: '0',
-  width: '100%',
-  height: '100%',
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  zIndex: 1000,
-};
+const PageTransition: React.FC = () => {
+  const [show, setShow] = useState(true);
 
-const LoadingSpinner: React.FC = () => {
   useEffect(() => {
     addKeyframes(); // Add keyframes to the document head
-  }, []);
-
-  return (
-    <div style={overlayStyle}>
-      <div style={spinnerStyle}></div>
-    </div>
-  );
-};
-
-// Example of a page component with loading animation
-const PageWithLoading: React.FC = () => {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate loading
-    const timer = setTimeout(() => setLoading(false), 3000); // 3 seconds loading time
+    const timer = setTimeout(() => setShow(false), 3000); // 3 seconds to fade out
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div>
-      {loading ? <LoadingSpinner /> : <div>Your content goes here</div>}
+    <div style={show ? {} : fadeOutStyle}>
+      <h1>Page Content</h1>
     </div>
   );
 };
 
-export default PageWithLoading;
-
+export default PageTransition;
