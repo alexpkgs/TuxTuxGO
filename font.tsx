@@ -1,9 +1,11 @@
 import React from 'react';
-import styles from './font.scss'; 
 
-const MyComponent: React.FC = () => {
+const MonospaceText: React.FC = () => {
   return (
+    <div style={{ fontFamily: 'monospace' }}>
+      This text is displayed in monospace font.
+    </div>
   );
 };
 
-export default MyComponent;
+export default MonospaceText;
